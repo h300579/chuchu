@@ -3,6 +3,7 @@
   <head>
     <link rel="icon" href="favicon.png" type="image/png" />
     <meta charset="UTF-8" />
+    <!-- 仅保留必要的viewport优化 -->
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -10,7 +11,7 @@
     <title>我们的纪念日</title>
 
     <style>
-      /* 基础样式保持不变 */
+      /* 基础样式完全沿用原代码 */
       html,
       body {
         margin: 0;
@@ -21,7 +22,7 @@
         font-family: "Helvetica Neue", Arial, sans-serif;
       }
 
-      /* 光晕、星星、背景层等样式保持不变 */
+      /* 光晕、星星、背景层样式完全沿用原代码 */
       .halo-bg {
         position: absolute;
         width: 100%;
@@ -146,7 +147,7 @@
         }
       }
 
-      /* 照片墙 - 核心修复：手机端重新布局 */
+      /* 照片墙 - 完全沿用原代码的图片样式（确保显示） */
       .photo-wall {
         position: absolute;
         width: 100%;
@@ -179,7 +180,7 @@
         box-shadow: 0 15px 35px rgba(255, 130, 180, 0.5);
       }
 
-      /* 主照片 */
+      /* 主照片 - 完全沿用原代码 */
       .main-photo {
         position: absolute;
         z-index: 7;
@@ -203,7 +204,7 @@
         box-shadow: 0 20px 50px rgba(255, 120, 160, 0.6);
       }
 
-      /* 内容框 - 提升层级避免被遮挡 */
+      /* 内容框 - 仅修复iOS毛玻璃问题 */
       .content-box {
         position: absolute;
         top: 50%;
@@ -213,8 +214,9 @@
         padding: 36px 60px;
         border-radius: 20px;
         backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px); /* 仅添加Safari前缀 */
         text-align: center;
-        z-index: 100; /* 核心修复：大幅提升层级，确保在最上层 */
+        z-index: 100;
         border: 2px solid rgba(255, 200, 230, 0.8);
         box-shadow: 0 10px 35px rgba(255, 160, 210, 0.5);
         animation: breathGlow 4s ease-in-out infinite,
@@ -243,7 +245,7 @@
         }
       }
 
-      /* 标题、倒计时、爱心、日期标记样式保持不变 */
+      /* 文字样式完全沿用原代码 */
       .title {
         font-size: 34px;
         color: #ff6fa8;
@@ -327,11 +329,12 @@
         background: rgba(255, 255, 255, 0.4);
         border-radius: 20px;
         backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px); /* 添加Safari前缀 */
         z-index: 5;
         letter-spacing: 1px;
       }
 
-      /* PC端布局 - 保持原有样式 */
+      /* 布局完全沿用原代码（确保图片位置正确） */
       @media (min-width: 769px) {
         .photo:nth-of-type(1) {
           top: -1vh;
@@ -352,91 +355,80 @@
           transform: rotate(30deg);
         }
         .main-photo {
-          /* 核心修复：用top替代bottom，避免负百分比偏移的动态计算误差 */
-          top: 70%; /* 从顶部开始，固定在屏幕60%的位置（可微调） */
+          top: 70%;
           left: 50%;
-          /* 仅水平居中，垂直方向不额外偏移，避免双重向上叠加 */
           transform: translate(-50%, 0) rotate(-2deg);
           width: 60%;
           z-index: 7;
         }
       }
 
-      /* 手机端布局 - 核心修复：重新定位所有元素，避免重叠 */
       @media (max-width: 768px) {
         html,
         body {
           overflow: hidden;
           height: 100%;
-          padding: 0 4%; /* 关键：左右预留4%安全距离，避免内容贴边 */
-          box-sizing: border-box; /* 确保padding不影响整体宽度计算 */
+          padding: 0 4%;
+          box-sizing: border-box;
         }
 
-        /* 照片1：右上角 - 减少宽度，增加顶部距离 */
         .photo:nth-of-type(1) {
-          top: 8%; /* 上移避免太靠近顶部 */
-          right: 4%; /* 与body右侧padding对齐 */
-          width: 22%; /* 缩小宽度，减少拥挤感 */
-          transform: rotate(12deg); /* 旋转角度略减，更自然 */
+          top: 8%;
+          right: 4%;
+          width: 22%;
+          transform: rotate(12deg);
           z-index: 3;
         }
 
-        /* 照片2：左上角 - 调整位置和宽度 */
         .photo:nth-of-type(2) {
-          top: 22%; /* 下移一点，与内容框错开 */
-          left: 4%; /* 与body左侧padding对齐 */
-          width: 28%; /* 适度缩小 */
-          transform: rotate(-8deg); /* 旋转角度略减 */
+          top: 22%;
+          left: 4%;
+          width: 28%;
+          transform: rotate(-8deg);
           z-index: 3;
         }
 
-        /* 照片3：左下角 - 上移避免太靠下 */
         .photo:nth-of-type(3) {
-          bottom: 30%; /* 上移，与主照片拉开距离 */
+          bottom: 30%;
           left: 6%;
           width: 22%;
           transform: rotate(18deg);
           z-index: 3;
         }
 
-        /* 主照片：优化位置和边框 */
         .main-photo {
-          bottom: 8%; /* 增加底部距离，避免贴底 */
+          bottom: 8%;
           left: 50%;
-          width: 65%; /* 从70%缩小到65%，更协调 */
+          width: 65%;
           transform: translate(-50%, 0) rotate(-1.5deg);
-          border-width: 6px; /* 边框从8px减到6px，更精致 */
+          border-width: 6px;
           z-index: 4;
         }
 
-        /* 内容框：适配屏幕宽度，减少内边距 */
         .content-box {
-          padding: 16px 18px; /* 内边距从20px减到16px，避免边框过宽 */
-          width: 90%; /* 基于body的padding内宽，实际占屏幕82% */
-          top: 23%; /* 微调位置 */
+          padding: 16px 18px;
+          width: 90%;
+          top: 23%;
           z-index: 100;
         }
 
-        /* 文字大小适配 - 更紧凑 */
         .title {
-          font-size: 19px; /* 略小一点 */
+          font-size: 19px;
           margin-bottom: 10px;
         }
         #countdown {
-          font-size: 15px; /* 缩小字体，避免换行拥挤 */
+          font-size: 15px;
           padding: 7px 10px;
-          width: 95%; /* 确保文字不溢出 */
-          word-break: keep-all; /* 保持数字完整性 */
+          width: 95%;
+          word-break: keep-all;
         }
 
-        /* 照片边框统一缩小 */
         .photo {
-          border-width: 4px; /* 从6px减到4px，更轻盈 */
+          border-width: 4px;
         }
 
-        /* 光晕适配优化 */
         .halo {
-          filter: blur(60px); /* 模糊度略减，避免覆盖过多内容 */
+          filter: blur(60px);
         }
         .halo1 {
           width: 450px;
@@ -455,42 +447,35 @@
   </head>
 
   <body>
-    <!-- 光晕背景 -->
+    <!-- 所有HTML结构完全沿用原代码 -->
     <div class="halo-bg">
       <div class="halo halo1"></div>
       <div class="halo halo2"></div>
       <div class="halo halo3"></div>
     </div>
 
-    <!-- 动态星星 -->
     <div id="stars-container"></div>
 
-    <!-- 背景图 -->
     <img src="light1.png" class="bg-layer" />
     <img src="light2.png" class="bg-layer2" />
     <img src="light3.png" class="bg-layer3" />
 
     <div class="photo-wall">
-      <!-- 照片 -->
       <img src="bg3.png" class="photo" />
       <img src="bg1.png" class="photo" />
       <img src="bg2.png" class="photo" />
-
-      <!-- 主照片 -->
       <img src="main.png" class="main-photo" />
     </div>
 
-    <!-- 内容区 -->
     <div class="content-box">
       <div class="title">喵喵 和 初初 已经认识了</div>
       <div id="countdown">Loading...</div>
     </div>
 
-    <!-- 初始日期标记 -->
     <div class="date-marker">始于 2022.11.28</div>
 
     <script>
-      /* 计时、爱心、星星等脚本保持不变 */
+      /* 脚本完全沿用原代码（避免图片加载逻辑冲突） */
       const startDate = new Date(2022, 10, 28);
       function updateCountdown() {
         const now = new Date();
