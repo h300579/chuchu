@@ -2,62 +2,363 @@
 <html lang="zh">
   <head>
     <meta charset="UTF-8" />
-    <title>纪念日倒计时</title>
+    <title>我们的纪念日</title>
+
     <style>
+      html,
       body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
         margin: 0;
-        background: #f9f9fb;
+        padding: 0;
+        height: 100%;
+        background: #ffe4f2;
+        overflow: hidden;
         font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+      /* PC 默认隐藏 .mobile-grid */
+      .mobile-grid {
+        display: none;
+      }
+
+      /* ==========================================
+      三层立体景深背景 (柔光层 + 光斑层 + 色散层)
+========================================== */
+      .bg-layer {
+        position: absolute;
+        width: 120%;
+        height: 120%;
+        top: -10%;
+        left: -10%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.45;
+        animation: bgFloat 18s ease-in-out infinite alternate;
+      }
+      .bg-layer2 {
+        position: absolute;
+        width: 140%;
+        height: 140%;
+        top: -20%;
+        left: -20%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.3;
+        animation: bgFloat2 26s ease-in-out infinite alternate;
+      }
+      .bg-layer3 {
+        position: absolute;
+        width: 150%;
+        height: 150%;
+        top: -25%;
+        left: -25%;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.25;
+        animation: bgFloat3 32s ease-in-out infinite alternate;
+      }
+
+      @keyframes bgFloat {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(20px, -20px) scale(1.06);
+        }
+      }
+      @keyframes bgFloat2 {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(-25px, 20px) scale(1.08);
+        }
+      }
+      @keyframes bgFloat3 {
+        0% {
+          transform: translate(0, 0) scale(1);
+        }
+        100% {
+          transform: translate(30px, 25px) scale(1.1);
+        }
+      }
+
+      /* ==========================================
+      照片墙（固定布局）
+========================================== */
+      .photo-wall {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        overflow: hidden;
+      }
+
+      .photo {
+        position: absolute;
+        border: 10px solid #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(255, 130, 180, 0.35);
+        opacity: 0.85;
+
+        /* 轻微晃动动画 */
+        animation: gentleShake 6s ease-in-out infinite alternate;
+      }
+
+      @keyframes gentleShake {
+        0% {
+          transform: rotate(-1deg) translateY(0px);
+        }
+        100% {
+          transform: rotate(1deg) translateY(-4px);
+        }
+      }
+
+      /* 最重要图片（保持不变） */
+      .main-photo {
+        position: absolute;
+        z-index: 7;
+        border: 12px solid white;
+        border-radius: 14px;
+        box-shadow: 0 12px 30px rgba(255, 120, 160, 0.4);
+        opacity: 0.97;
+        animation: gentleShake 7s ease-in-out infinite alternate;
+      }
+
+      /* ==========================================
+        内容框（呼吸发光 + 玻璃模糊）
+========================================== */
+      .content-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.55);
+        padding: 36px 60px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
         text-align: center;
+        z-index: 10;
+        border: 2px solid rgba(255, 200, 230, 0.7);
+        box-shadow: 0 0 30px rgba(255, 160, 210, 0.5);
+
+        /* 呼吸光动画 */
+        animation: breathGlow 4s ease-in-out infinite;
       }
-      .box {
-        padding: 40px 60px;
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+
+      @keyframes breathGlow {
+        0% {
+          box-shadow: 0 0 25px rgba(255, 150, 200, 0.45);
+        }
+        50% {
+          box-shadow: 0 0 45px rgba(255, 180, 220, 0.75);
+        }
+        100% {
+          box-shadow: 0 0 25px rgba(255, 150, 200, 0.45);
+        }
       }
+
       .title {
-        font-size: 32px;
+        font-size: 34px;
+        color: #ff6fa8;
         margin-bottom: 20px;
+        text-shadow: 0 0 7px rgba(255, 255, 255, 0.9);
       }
+
       #countdown {
-        font-size: 28px;
+        font-size: 26px;
         font-weight: bold;
-        color: #333;
+        color: #d93f75;
+        padding: 12px 20px;
+        background: rgba(255, 240, 245, 0.75);
+        border-radius: 12px;
+        border: 2px solid rgba(255, 180, 210, 0.8);
+        display: inline-block;
+      }
+
+      /* ==========================================
+      漂浮爱心
+========================================== */
+      .floating-heart {
+        position: absolute;
+        color: #ff7aa5;
+        font-size: 20px;
+        opacity: 0.8;
+        animation: floatUp 6s linear infinite;
+        z-index: 20;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 0.9;
+        }
+        100% {
+          transform: translateY(-150px) scale(1.6);
+          opacity: 0;
+        }
+      }
+
+      /* 点击爱心 */
+      .click-heart {
+        position: absolute;
+        color: #ff5d93;
+        font-size: 22px;
+        animation: clickFloat 1.2s ease-out forwards;
+        pointer-events: none;
+        z-index: 99;
+      }
+      @keyframes clickFloat {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-80px) scale(1.8);
+          opacity: 0;
+        }
+      }
+
+      /* ==========================================
+          手机适配布局
+========================================== */
+      @media (max-width: 768px) {
+        .mobile-grid {
+          display: grid;
+        }
+        /* 手机端重新布局：让照片墙改为网格 */
+        .photo-wall {
+          position: relative;
+          width: 100%;
+          height: auto;
+          transform: none;
+          top: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 20px;
+          gap: 16px;
+        }
+
+        /* 小图统一成 2×2 网格的容器 */
+        .mobile-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+          width: 86vw;
+          z-index: 5;
+        }
+
+        .mobile-grid img {
+          width: 100%;
+          border: 6px solid #fff;
+          border-radius: 12px;
+          box-shadow: 0 6px 15px rgba(255, 130, 180, 0.3);
+          animation: gentleShake 6s ease-in-out infinite alternate;
+        }
+
+        /* 主图居中放大 */
+        .main-photo {
+          position: relative !important;
+          width: 70vw !important;
+          left: 0 !important;
+          bottom: 0 !important;
+          transform: rotate(-2deg) !important;
+          margin: 0 auto;
+        }
+
+        /* 内容区下移，让主图不会遮挡 */
+        .content-box {
+          position: relative;
+          transform: none;
+          top: 0;
+          left: 0;
+          margin: 10px auto 30px auto;
+          width: 86vw;
+          padding: 22px 20px;
+        }
+
+        .title {
+          font-size: 24px;
+        }
+
+        #countdown {
+          font-size: 18px;
+          padding: 10px 14px;
+        }
+
+        /* 把原 PC 布局的小图隐藏（避免重叠） */
+        .photo {
+          display: none;
+        }
       }
     </style>
   </head>
+
   <body>
-    <div class="box">
-      <div class="title">距离纪念日还有</div>
+    <img src="light1.png" class="bg-layer" />
+    <img src="light2.png" class="bg-layer2" />
+    <img src="light3.png" class="bg-layer3" />
+    <div class="photo-wall">
+      <!-- 手机端 2×2 小图专用布局 -->
+      <div class="mobile-grid">
+        <img src="bg1.png" />
+        <img src="bg2.png" />
+        <img src="bg3.png" />
+      </div>
+      <!-- 你可以自行调整 top/left/width/rotate 让排版永远好看 -->
+
+      <img
+        src="bg3.png"
+        class="photo"
+        style="top: -5%; right: 10%; width: 140px; transform: rotate(30deg)"
+      />
+      <img
+        src="bg1.png"
+        class="photo"
+        style="top: -20%; right: 40%; width: 280px; transform: rotate(30deg)"
+      />
+      <img
+        src="bg2.png"
+        class="photo"
+        style="top: -1%; left: -1%; width: 400px; transform: rotate(30deg)"
+      />
+
+      <!-- 最重要的照片（置顶） -->
+      <img
+        src="main.png"
+        class="main-photo"
+        style="
+          bottom: -10%;
+          left: 50%;
+          width: 600px; /* 自定义大小 */
+          transform: translate(-50%, -50%) rotate(-2deg); /* 自定义角度 */
+        "
+      />
+    </div>
+
+    <!-- 内容区 -->
+    <div class="content-box">
+      <div class="title">喵喵 和 初初 已经认识了</div>
       <div id="countdown">Loading...</div>
     </div>
 
     <script>
-      // ===== 修改纪念日（每年的月 日） =====
-      const targetMonth = 12; // 月份（1-12）
-      const targetDay = 2; // 日期（1-31）
+      /* -----------------------------
+   认识多久计时（持续增加）
+------------------------------*/
+
+      // 设置你们认识的日期（格式：YYYY, MM - 1, DD）
+      const startDate = new Date(2022, 10, 28);
+      // ⚠️ 注意：月份要 -1，比如 11 月要写成 10
+      // 改成你们实际的日期即可
 
       function updateCountdown() {
         const now = new Date();
-        let year = now.getFullYear();
 
-        // 构造今年的纪念日
-        let targetDate = new Date(year, targetMonth - 1, targetDay);
+        const diff = now - startDate;
 
-        // 如果今年已经过了，就指向下一年
-        if (now > targetDate) {
-          targetDate = new Date(year + 1, targetMonth - 1, targetDay);
-        }
-
-        const diff = targetDate - now;
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const days = Math.floor(diff / 86400000);
+        const hours = Math.floor((diff / 3600000) % 24);
+        const minutes = Math.floor((diff / 60000) % 60);
         const seconds = Math.floor((diff / 1000) % 60);
 
         document.getElementById(
@@ -65,8 +366,37 @@
         ).innerText = `${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒`;
       }
 
-      updateCountdown();
       setInterval(updateCountdown, 1000);
+      updateCountdown();
+      /* -----------------------------
+      漂浮爱心
+------------------------------*/
+      function createFloatingHeart() {
+        const heart = document.createElement("div");
+        heart.className = "floating-heart";
+        heart.innerText = "❤";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.top = "100vh";
+        heart.style.fontSize = 16 + Math.random() * 20 + "px";
+        heart.style.animationDuration = 4 + Math.random() * 4 + "s";
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 8000);
+      }
+      setInterval(createFloatingHeart, 800);
+
+      /* -----------------------------
+      点击爱心
+------------------------------*/
+      document.addEventListener("click", function (e) {
+        const heart = document.createElement("div");
+        heart.className = "click-heart";
+        heart.innerText = "❤";
+        heart.style.left = e.pageX + "px";
+        heart.style.top = e.pageY + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 1200);
+      });
     </script>
   </body>
 </html>
