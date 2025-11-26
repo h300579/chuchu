@@ -11,7 +11,7 @@
         padding: 0;
         height: 100%;
         background: #ffe4f2;
-        overflow: hidden;
+        overflow: visible;
         font-family: "Helvetica Neue", Arial, sans-serif;
       }
       /* PC 默认隐藏 .mobile-grid */
@@ -85,7 +85,7 @@
       照片墙（固定布局）
 ========================================== */
       .photo-wall {
-        position: absolute;
+        position: relative;
         width: 100%;
         height: 100%;
         z-index: 2;
@@ -227,48 +227,24 @@
           height: auto !important;
         }
 
+        /* 整个网页整体缩小 */
+        body {
+          transform: scale(0.55);
+          transform-origin: top center;
+        }
+
+        /* 缩小后高度变了，需要让页面可以滚 */
         .photo-wall {
-          position: relative !important;
-          width: 100% !important;
+          position: relative !important; /* 关键 */
           height: auto !important;
+        }
+        .bg-layer,
+        .bg-layer2,
+        .bg-layer3 {
+          position: fixed; /* 关键 */
+          top: 0;
+          left: 0;
           overflow: visible !important;
-          top: 0 !important;
-          transform: none !important;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding-top: 20px;
-          gap: 16px;
-        }
-
-        .mobile-grid {
-          display: grid !important;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
-          width: 86vw;
-        }
-
-        .main-photo {
-          position: relative !important;
-          width: 70vw !important;
-          left: 0 !important;
-          bottom: 0 !important;
-          transform: none !important;
-          margin: 0 auto;
-        }
-
-        .content-box {
-          position: relative !important;
-          transform: none !important;
-          top: 0 !important;
-          left: 0 !important;
-          margin: 20px auto !important;
-          width: 86vw !important;
-          padding: 22px 20px !important;
-        }
-
-        .photo {
-          display: none !important;
         }
       }
     </style>
@@ -279,13 +255,6 @@
     <img src="light2.png" class="bg-layer2" />
     <img src="light3.png" class="bg-layer3" />
     <div class="photo-wall">
-      <!-- 手机端 2×2 小图专用布局 -->
-      <div class="mobile-grid">
-        <img src="bg1.png" />
-        <img src="bg2.png" />
-        <img src="bg3.png" />
-      </div>
-
       <img
         src="bg3.png"
         class="photo"
