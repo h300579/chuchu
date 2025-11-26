@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>纪念日倒计时</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: #f9f9fb;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        text-align: center;
+      }
+      .box {
+        padding: 40px 60px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      }
+      .title {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+      #countdown {
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="title">距离纪念日还有</div>
+      <div id="countdown">Loading...</div>
+    </div>
+
+    <script>
+      // ===== 修改纪念日（每年的月 日） =====
+      const targetMonth = 12; // 月份（1-12）
+      const targetDay = 2; // 日期（1-31）
+
+      function updateCountdown() {
+        const now = new Date();
+        let year = now.getFullYear();
+
+        // 构造今年的纪念日
+        let targetDate = new Date(year, targetMonth - 1, targetDay);
+
+        // 如果今年已经过了，就指向下一年
+        if (now > targetDate) {
+          targetDate = new Date(year + 1, targetMonth - 1, targetDay);
+        }
+
+        const diff = targetDate - now;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        document.getElementById(
+          "countdown"
+        ).innerText = `${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒`;
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    </script>
+  </body>
+</html>
