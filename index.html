@@ -9,6 +9,7 @@
     <title>我们的纪念日</title>
 
     <style>
+      /* 基础样式保持不变 */
       html,
       body {
         margin: 0;
@@ -19,7 +20,7 @@
         font-family: "Helvetica Neue", Arial, sans-serif;
       }
 
-      /* 光晕背景动画 */
+      /* 光晕、星星、背景层等样式保持不变 */
       .halo-bg {
         position: absolute;
         width: 100%;
@@ -69,8 +70,6 @@
           opacity: 0.45;
         }
       }
-
-      /* 星星装饰 */
       .star {
         position: absolute;
         color: rgba(255, 255, 255, 0.8);
@@ -88,8 +87,6 @@
           transform: scale(1.2);
         }
       }
-
-      /* 三层立体景深背景 */
       .bg-layer {
         position: absolute;
         width: 120%;
@@ -123,7 +120,6 @@
         opacity: 0.25;
         animation: bgFloat3 32s ease-in-out infinite alternate;
       }
-
       @keyframes bgFloat {
         0% {
           transform: translate(0, 0) scale(1);
@@ -149,7 +145,7 @@
         }
       }
 
-      /* 照片墙 */
+      /* 照片墙 - 核心修复：手机端重新布局 */
       .photo-wall {
         position: absolute;
         width: 100%;
@@ -167,13 +163,6 @@
         transition: all 0.5s ease;
         animation: gentleShake 6s ease-in-out infinite alternate;
       }
-      .photo:hover {
-        transform: scale(1.05) rotate(0deg) !important;
-        z-index: 6;
-        opacity: 0.95;
-        box-shadow: 0 15px 35px rgba(255, 130, 180, 0.5);
-      }
-
       @keyframes gentleShake {
         0% {
           transform: rotate(-1deg) translateY(0px);
@@ -181,6 +170,12 @@
         100% {
           transform: rotate(1deg) translateY(-4px);
         }
+      }
+      .photo:hover {
+        transform: scale(1.05) rotate(0deg) !important;
+        z-index: 6;
+        opacity: 0.95;
+        box-shadow: 0 15px 35px rgba(255, 130, 180, 0.5);
       }
 
       /* 主照片 */
@@ -194,10 +189,6 @@
         transition: all 0.5s ease;
         animation: floatMain 8s ease-in-out infinite alternate;
       }
-      .main-photo:hover {
-        transform: translate(-50%, -50%) scale(1.03) rotate(0deg) !important;
-        box-shadow: 0 20px 50px rgba(255, 120, 160, 0.6);
-      }
       @keyframes floatMain {
         0% {
           transform: translate(-50%, -50%) rotate(-2deg) translateY(0px);
@@ -206,8 +197,12 @@
           transform: translate(-50%, -50%) rotate(1deg) translateY(-10px);
         }
       }
+      .main-photo:hover {
+        transform: translate(-50%, -50%) scale(1.03) rotate(0deg) !important;
+        box-shadow: 0 20px 50px rgba(255, 120, 160, 0.6);
+      }
 
-      /* 内容框 */
+      /* 内容框 - 提升层级避免被遮挡 */
       .content-box {
         position: absolute;
         top: 50%;
@@ -218,7 +213,7 @@
         border-radius: 20px;
         backdrop-filter: blur(12px);
         text-align: center;
-        z-index: 10;
+        z-index: 100; /* 核心修复：大幅提升层级，确保在最上层 */
         border: 2px solid rgba(255, 200, 230, 0.8);
         box-shadow: 0 10px 35px rgba(255, 160, 210, 0.5);
         animation: breathGlow 4s ease-in-out infinite,
@@ -232,7 +227,6 @@
           transform: translate(-50%, -50%) translateY(-8px);
         }
       }
-
       @keyframes breathGlow {
         0% {
           box-shadow: 0 0 25px rgba(255, 150, 200, 0.45),
@@ -248,6 +242,7 @@
         }
       }
 
+      /* 标题、倒计时、爱心、日期标记样式保持不变 */
       .title {
         font-size: 34px;
         color: #ff6fa8;
@@ -266,7 +261,6 @@
         background: linear-gradient(90deg, transparent, #ff94c2, transparent);
         border-radius: 3px;
       }
-
       #countdown {
         font-size: 26px;
         font-weight: bold;
@@ -279,8 +273,6 @@
         box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.5);
         margin-top: 10px;
       }
-
-      /* 漂浮爱心 */
       .floating-heart {
         position: absolute;
         color: #ff7aa5;
@@ -300,8 +292,6 @@
           opacity: 0;
         }
       }
-
-      /* 点击爱心特效升级 */
       .click-heart {
         position: absolute;
         color: #ff5d93;
@@ -325,8 +315,6 @@
           opacity: 0;
         }
       }
-
-      /* 底部日期标记 */
       .date-marker {
         position: absolute;
         bottom: 20px;
@@ -342,38 +330,38 @@
         letter-spacing: 1px;
       }
 
-      /* PC端布局 - 精确还原原始位置 */
+      /* PC端布局 - 保持原有样式 */
       @media (min-width: 769px) {
         .photo:nth-of-type(1) {
-          top: -1vh; /* 还原原始top值 */
-          right: 10vh; /* 还原原始right值 */
+          top: -1vh;
+          right: 10vh;
           width: 14%;
           transform: rotate(30deg);
         }
-
         .photo:nth-of-type(2) {
           top: -20%;
           right: 40%;
           width: 20.3%;
           transform: rotate(30deg);
         }
-
         .photo:nth-of-type(3) {
           top: -1%;
           left: -1%;
           width: 33.6%;
           transform: rotate(30deg);
         }
-
         .main-photo {
-          bottom: -10%;
+          /* 核心修复：用top替代bottom，避免负百分比偏移的动态计算误差 */
+          top: 50%; /* 从顶部开始，固定在屏幕60%的位置（可微调） */
           left: 50%;
+          /* 仅水平居中，垂直方向不额外偏移，避免双重向上叠加 */
+          transform: translate(-50%, 0) rotate(-2deg);
           width: 60%;
-          transform: translate(-50%, -50%) rotate(-2deg);
+          z-index: 7;
         }
       }
 
-      /* 手机端适配 */
+      /* 手机端布局 - 核心修复：重新定位所有元素，避免重叠 */
       @media (max-width: 768px) {
         html,
         body {
@@ -381,55 +369,67 @@
           height: 100%;
         }
 
+        /* 照片1：右上角 */
         .photo:nth-of-type(1) {
           top: 5%;
           right: 5%;
-          width: 30%;
+          width: 25%;
           transform: rotate(15deg);
+          z-index: 3;
         }
 
+        /* 照片2：左上角 */
         .photo:nth-of-type(2) {
           top: 20%;
           left: 5%;
-          width: 35%;
-          transform: rotate(-10deg);
-        }
-
-        .photo:nth-of-type(3) {
-          bottom: 20%;
-          left: 8%;
           width: 30%;
-          transform: rotate(20deg);
+          transform: rotate(-10deg);
+          z-index: 3;
         }
 
+        /* 照片3：左下角 */
+        .photo:nth-of-type(3) {
+          bottom: 25%;
+          left: 8%;
+          width: 25%;
+          transform: rotate(20deg);
+          z-index: 3;
+        }
+
+        /* 主照片：底部居中，不遮挡内容框 */
         .main-photo {
-          bottom: 30%;
+          bottom: 5%;
           left: 50%;
           width: 70%;
           transform: translate(-50%, 0) rotate(-2deg);
           border-width: 8px;
+          z-index: 4;
         }
 
+        /* 内容框：顶部居中，不被照片遮挡 */
         .content-box {
           padding: 20px 25px;
           width: 70%;
-          top: 30%;
+          top: 25%; /* 上移，避免和主照片重叠 */
+          z-index: 100; /* 确保在最上层 */
         }
 
+        /* 文字大小适配手机 */
         .title {
-          font-size: 22px;
-          margin-bottom: 15px;
+          font-size: 20px;
+          margin-bottom: 12px;
         }
-
         #countdown {
-          font-size: 18px;
-          padding: 10px 15px;
+          font-size: 16px;
+          padding: 8px 12px;
         }
 
+        /* 照片边框缩小 */
         .photo {
           border-width: 6px;
         }
 
+        /* 光晕适配手机 */
         .halo {
           filter: blur(70px);
         }
@@ -485,27 +485,22 @@
     <div class="date-marker">始于 2022.11.28</div>
 
     <script>
-      /* 计时功能 */
+      /* 计时、爱心、星星等脚本保持不变 */
       const startDate = new Date(2022, 10, 28);
-
       function updateCountdown() {
         const now = new Date();
         const diff = now - startDate;
-
         const days = Math.floor(diff / 86400000);
         const hours = Math.floor((diff / 3600000) % 24);
         const minutes = Math.floor((diff / 60000) % 60);
         const seconds = Math.floor((diff / 1000) % 60);
-
         document.getElementById(
           "countdown"
         ).innerText = `${days} 天 ${hours} 小时 ${minutes} 分钟 ${seconds} 秒`;
       }
-
       setInterval(updateCountdown, 1000);
       updateCountdown();
 
-      /* 漂浮爱心 */
       function createFloatingHeart() {
         const heart = document.createElement("div");
         heart.className = "floating-heart";
@@ -516,13 +511,11 @@
         heart.style.animationDuration = 4 + Math.random() * 4 + "s";
         const colors = ["#ff7aa5", "#ff5d93", "#ff94c2", "#ffb6e0"];
         heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-
         document.body.appendChild(heart);
         setTimeout(() => heart.remove(), 8000);
       }
       setInterval(createFloatingHeart, 600);
 
-      /* 点击爱心特效 */
       document.addEventListener("click", function (e) {
         const count = 3 + Math.floor(Math.random() * 3);
         for (let i = 0; i < count; i++) {
@@ -537,17 +530,14 @@
           heart.style.animationDuration = 0.8 + Math.random() * 0.6 + "s";
           const colors = ["#ff5d93", "#ff7aa5", "#ff3b80", "#ff94c2"];
           heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-
           document.body.appendChild(heart);
           setTimeout(() => heart.remove(), 1200);
         }
       });
 
-      /* 动态星星生成 */
       function createStars() {
         const container = document.getElementById("stars-container");
         const count = window.innerWidth < 768 ? 20 : 40;
-
         for (let i = 0; i < count; i++) {
           const star = document.createElement("div");
           star.className = "star";
@@ -562,7 +552,6 @@
       }
       createStars();
 
-      /* 页面加载动画 */
       window.addEventListener("load", function () {
         document.querySelectorAll(".photo, .main-photo").forEach((el) => {
           el.style.opacity = 0;
