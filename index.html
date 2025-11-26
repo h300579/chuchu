@@ -2,6 +2,10 @@
 <html lang="zh">
   <head>
     <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>我们的纪念日</title>
 
     <style>
@@ -11,17 +15,11 @@
         padding: 0;
         height: 100%;
         background: #ffe4f2;
-        overflow: visible;
+        overflow: hidden;
         font-family: "Helvetica Neue", Arial, sans-serif;
       }
-      /* PC 默认隐藏 .mobile-grid */
-      .mobile-grid {
-        display: none;
-      }
 
-      /* ==========================================
-      三层立体景深背景 (柔光层 + 光斑层 + 色散层)
-========================================== */
+      /* 三层立体景深背景 */
       .bg-layer {
         position: absolute;
         width: 120%;
@@ -81,11 +79,9 @@
         }
       }
 
-      /* ==========================================
-      照片墙（固定布局）
-========================================== */
+      /* 照片墙 */
       .photo-wall {
-        position: relative;
+        position: absolute;
         width: 100%;
         height: 100%;
         z-index: 2;
@@ -98,8 +94,6 @@
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(255, 130, 180, 0.35);
         opacity: 0.85;
-
-        /* 轻微晃动动画 */
         animation: gentleShake 6s ease-in-out infinite alternate;
       }
 
@@ -112,7 +106,7 @@
         }
       }
 
-      /* 最重要图片（保持不变） */
+      /* 主照片 */
       .main-photo {
         position: absolute;
         z-index: 7;
@@ -123,9 +117,7 @@
         animation: gentleShake 7s ease-in-out infinite alternate;
       }
 
-      /* ==========================================
-        内容框（呼吸发光 + 玻璃模糊）
-========================================== */
+      /* 内容框 */
       .content-box {
         position: absolute;
         top: 50%;
@@ -139,8 +131,6 @@
         z-index: 10;
         border: 2px solid rgba(255, 200, 230, 0.7);
         box-shadow: 0 0 30px rgba(255, 160, 210, 0.5);
-
-        /* 呼吸光动画 */
         animation: breathGlow 4s ease-in-out infinite;
       }
 
@@ -174,9 +164,7 @@
         display: inline-block;
       }
 
-      /* ==========================================
-      漂浮爱心
-========================================== */
+      /* 漂浮爱心 */
       .floating-heart {
         position: absolute;
         color: #ff7aa5;
@@ -217,34 +205,129 @@
         }
       }
 
-      /* ==========================================
-          手机适配布局
-========================================== */
+      /* PC端布局 - 恢复你原来的样式 */
+      @media (min-width: 769px) {
+        .photo:nth-of-type(1) {
+          top: -5%;
+          right: 10%;
+          width: 14%;
+          transform: rotate(30deg);
+        }
+
+        .photo:nth-of-type(2) {
+          top: -20%;
+          right: 40%;
+          width: 20.3%;
+          transform: rotate(30deg);
+        }
+
+        .photo:nth-of-type(3) {
+          top: -1%;
+          left: -1%;
+          width: 33.6%;
+          transform: rotate(30deg);
+        }
+
+        .main-photo {
+          bottom: -10%;
+          left: 50%;
+          width: 60%;
+          transform: translate(-50%, -50%) rotate(-2deg);
+        }
+      }
+
+      /* 手机端适配 */
       @media (max-width: 768px) {
         html,
         body {
-          overflow: auto !important;
-          height: auto !important;
+          overflow: hidden;
+          height: 100%;
         }
 
-        /* 整个网页整体缩小 */
         body {
-          transform: scale(0.55);
-          transform-origin: top center;
+          transform: none;
         }
 
-        /* 缩小后高度变了，需要让页面可以滚 */
-        .photo-wall {
-          position: relative !important; /* 关键 */
-          height: auto !important;
+        /* 手机端照片布局 */
+        .photo:nth-of-type(1) {
+          top: 10%;
+          right: 5%;
+          width: 30%;
+          transform: rotate(15deg);
         }
+
+        .photo:nth-of-type(2) {
+          top: 25%;
+          left: 5%;
+          width: 35%;
+          transform: rotate(-10deg);
+        }
+
+        .photo:nth-of-type(3) {
+          bottom: 15%;
+          left: 8%;
+          width: 30%;
+          transform: rotate(20deg);
+        }
+
+        .main-photo {
+          bottom: 25%;
+          left: 50%;
+          width: 70%;
+          transform: translate(-50%, 0) rotate(-2deg);
+          border-width: 8px;
+        }
+
+        .content-box {
+          padding: 20px 25px;
+          width: 70%;
+          top: 30%;
+        }
+
+        .title {
+          font-size: 22px;
+          margin-bottom: 15px;
+        }
+
+        #countdown {
+          font-size: 18px;
+          padding: 8px 15px;
+        }
+
+        .photo {
+          border-width: 6px;
+        }
+
+        .floating-heart {
+          font-size: 16px;
+        }
+
+        .click-heart {
+          font-size: 18px;
+        }
+
         .bg-layer,
         .bg-layer2,
         .bg-layer3 {
-          position: fixed; /* 关键 */
-          top: 0;
-          left: 0;
-          overflow: visible !important;
+          width: 200%;
+          height: 200%;
+          top: -50%;
+          left: -50%;
+        }
+      }
+
+      /* 小屏手机优化 */
+      @media (max-width: 375px) {
+        .title {
+          font-size: 18px;
+        }
+
+        #countdown {
+          font-size: 16px;
+        }
+
+        .main-photo {
+          width: 80%;
         }
       }
     </style>
@@ -254,34 +337,14 @@
     <img src="light1.png" class="bg-layer" />
     <img src="light2.png" class="bg-layer2" />
     <img src="light3.png" class="bg-layer3" />
-    <div class="photo-wall">
-      <img
-        src="bg3.png"
-        class="photo"
-        style="top: -5%; right: 10%; width: 14%; transform: rotate(30deg)"
-      />
-      <img
-        src="bg1.png"
-        class="photo"
-        style="top: -20%; right: 40%; width: 20.3%; transform: rotate(30deg)"
-      />
-      <img
-        src="bg2.png"
-        class="photo"
-        style="top: -1%; left: -1%; width: 33.6%; transform: rotate(30deg)"
-      />
 
-      <!-- 最重要的照片（置顶） -->
-      <img
-        src="main.png"
-        class="main-photo"
-        style="
-          bottom: -10%;
-          left: 50%;
-          width: 60%; /* 自定义大小 */
-          transform: translate(-50%, -50%) rotate(-2deg); /* 自定义角度 */
-        "
-      />
+    <div class="photo-wall">
+      <img src="bg3.png" class="photo" />
+      <img src="bg1.png" class="photo" />
+      <img src="bg2.png" class="photo" />
+
+      <!-- 主照片 -->
+      <img src="main.png" class="main-photo" />
     </div>
 
     <!-- 内容区 -->
@@ -291,16 +354,11 @@
     </div>
 
     <script>
-      /* -----------------------------
-   认识多久计时（持续增加）
-------------------------------*/
-
-      // 设置认识的日期（格式：YYYY, MM - 1, DD）
+      /* 计时功能 */
       const startDate = new Date(2022, 10, 28);
 
       function updateCountdown() {
         const now = new Date();
-
         const diff = now - startDate;
 
         const days = Math.floor(diff / 86400000);
@@ -315,9 +373,8 @@
 
       setInterval(updateCountdown, 1000);
       updateCountdown();
-      /* -----------------------------
-      漂浮爱心
-------------------------------*/
+
+      /* 漂浮爱心 */
       function createFloatingHeart() {
         const heart = document.createElement("div");
         heart.className = "floating-heart";
@@ -332,9 +389,7 @@
       }
       setInterval(createFloatingHeart, 800);
 
-      /* -----------------------------
-      点击爱心
-------------------------------*/
+      /* 点击爱心 */
       document.addEventListener("click", function (e) {
         const heart = document.createElement("div");
         heart.className = "click-heart";
