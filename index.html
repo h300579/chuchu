@@ -221,16 +221,19 @@
           手机适配布局
 ========================================== */
       @media (max-width: 768px) {
-        .mobile-grid {
-          display: grid;
+        html,
+        body {
+          overflow: auto !important;
+          height: auto !important;
         }
-        /* 手机端重新布局：让照片墙改为网格 */
+
         .photo-wall {
-          position: relative;
-          width: 100%;
-          height: auto;
-          transform: none;
-          top: 0;
+          position: relative !important;
+          width: 100% !important;
+          height: auto !important;
+          overflow: visible !important;
+          top: 0 !important;
+          transform: none !important;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -238,56 +241,34 @@
           gap: 16px;
         }
 
-        /* 小图统一成 2×2 网格的容器 */
         .mobile-grid {
-          display: grid;
+          display: grid !important;
           grid-template-columns: repeat(2, 1fr);
           gap: 12px;
           width: 86vw;
-          z-index: 5;
         }
 
-        .mobile-grid img {
-          width: 100%;
-          border: 6px solid #fff;
-          border-radius: 12px;
-          box-shadow: 0 6px 15px rgba(255, 130, 180, 0.3);
-          animation: gentleShake 6s ease-in-out infinite alternate;
-        }
-
-        /* 主图居中放大 */
         .main-photo {
           position: relative !important;
           width: 70vw !important;
           left: 0 !important;
           bottom: 0 !important;
-          transform: rotate(-2deg) !important;
+          transform: none !important;
           margin: 0 auto;
         }
 
-        /* 内容区下移，让主图不会遮挡 */
         .content-box {
-          position: relative;
-          transform: none;
-          top: 0;
-          left: 0;
-          margin: 10px auto 30px auto;
-          width: 86vw;
-          padding: 22px 20px;
+          position: relative !important;
+          transform: none !important;
+          top: 0 !important;
+          left: 0 !important;
+          margin: 20px auto !important;
+          width: 86vw !important;
+          padding: 22px 20px !important;
         }
 
-        .title {
-          font-size: 24px;
-        }
-
-        #countdown {
-          font-size: 18px;
-          padding: 10px 14px;
-        }
-
-        /* 把原 PC 布局的小图隐藏（避免重叠） */
         .photo {
-          display: none;
+          display: none !important;
         }
       }
     </style>
