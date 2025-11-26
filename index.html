@@ -14,9 +14,79 @@
         margin: 0;
         padding: 0;
         height: 100%;
-        background: #ffe4f2;
+        background: linear-gradient(135deg, #ffe4f2 0%, #ffcceb 100%);
         overflow: hidden;
         font-family: "Helvetica Neue", Arial, sans-serif;
+      }
+
+      /* 光晕背景动画 */
+      .halo-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+      }
+      .halo {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.3;
+        animation: pulse 15s infinite ease-in-out;
+      }
+      .halo1 {
+        width: 800px;
+        height: 800px;
+        background: #ff9dd2;
+        top: -400px;
+        left: -200px;
+        animation-delay: 0s;
+      }
+      .halo2 {
+        width: 600px;
+        height: 600px;
+        background: #ffb6e0;
+        bottom: -300px;
+        right: -100px;
+        animation-delay: 3s;
+      }
+      .halo3 {
+        width: 500px;
+        height: 500px;
+        background: #ffcceb;
+        top: 30%;
+        right: 20%;
+        animation-delay: 6s;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.3;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 0.45;
+        }
+      }
+
+      /* 星星装饰 */
+      .star {
+        position: absolute;
+        color: rgba(255, 255, 255, 0.8);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        animation: twinkle 4s infinite alternate;
+        z-index: 1;
+      }
+      @keyframes twinkle {
+        0% {
+          opacity: 0.3;
+          transform: scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
       }
 
       /* 三层立体景深背景 */
@@ -92,9 +162,16 @@
         position: absolute;
         border: 10px solid #fff;
         border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(255, 130, 180, 0.35);
+        box-shadow: 0 10px 30px rgba(255, 130, 180, 0.4);
         opacity: 0.85;
+        transition: all 0.5s ease;
         animation: gentleShake 6s ease-in-out infinite alternate;
+      }
+      .photo:hover {
+        transform: scale(1.05) rotate(0deg) !important;
+        z-index: 6;
+        opacity: 0.95;
+        box-shadow: 0 15px 35px rgba(255, 130, 180, 0.5);
       }
 
       @keyframes gentleShake {
@@ -112,9 +189,22 @@
         z-index: 7;
         border: 12px solid white;
         border-radius: 14px;
-        box-shadow: 0 12px 30px rgba(255, 120, 160, 0.4);
+        box-shadow: 0 15px 40px rgba(255, 120, 160, 0.5);
         opacity: 0.97;
-        animation: gentleShake 7s ease-in-out infinite alternate;
+        transition: all 0.5s ease;
+        animation: floatMain 8s ease-in-out infinite alternate;
+      }
+      .main-photo:hover {
+        transform: translate(-50%, -50%) scale(1.03) rotate(0deg) !important;
+        box-shadow: 0 20px 50px rgba(255, 120, 160, 0.6);
+      }
+      @keyframes floatMain {
+        0% {
+          transform: translate(-50%, -50%) rotate(-2deg) translateY(0px);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(1deg) translateY(-10px);
+        }
       }
 
       /* 内容框 */
@@ -123,26 +213,38 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: rgba(255, 255, 255, 0.55);
+        background: rgba(255, 255, 255, 0.65);
         padding: 36px 60px;
         border-radius: 20px;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(12px);
         text-align: center;
         z-index: 10;
-        border: 2px solid rgba(255, 200, 230, 0.7);
-        box-shadow: 0 0 30px rgba(255, 160, 210, 0.5);
-        animation: breathGlow 4s ease-in-out infinite;
+        border: 2px solid rgba(255, 200, 230, 0.8);
+        box-shadow: 0 10px 35px rgba(255, 160, 210, 0.5);
+        animation: breathGlow 4s ease-in-out infinite,
+          floatBox 6s ease-in-out infinite alternate;
+      }
+      @keyframes floatBox {
+        0% {
+          transform: translate(-50%, -50%) translateY(0px);
+        }
+        100% {
+          transform: translate(-50%, -50%) translateY(-8px);
+        }
       }
 
       @keyframes breathGlow {
         0% {
-          box-shadow: 0 0 25px rgba(255, 150, 200, 0.45);
+          box-shadow: 0 0 25px rgba(255, 150, 200, 0.45),
+            0 0 0 2px rgba(255, 255, 255, 0.2);
         }
         50% {
-          box-shadow: 0 0 45px rgba(255, 180, 220, 0.75);
+          box-shadow: 0 0 45px rgba(255, 180, 220, 0.75),
+            0 0 0 4px rgba(255, 255, 255, 0.3);
         }
         100% {
-          box-shadow: 0 0 25px rgba(255, 150, 200, 0.45);
+          box-shadow: 0 0 25px rgba(255, 150, 200, 0.45),
+            0 0 0 2px rgba(255, 255, 255, 0.2);
         }
       }
 
@@ -150,18 +252,32 @@
         font-size: 34px;
         color: #ff6fa8;
         margin-bottom: 20px;
-        text-shadow: 0 0 7px rgba(255, 255, 255, 0.9);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+        position: relative;
+        display: inline-block;
+      }
+      .title::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 10%;
+        width: 80%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #ff94c2, transparent);
+        border-radius: 3px;
       }
 
       #countdown {
         font-size: 26px;
         font-weight: bold;
         color: #d93f75;
-        padding: 12px 20px;
-        background: rgba(255, 240, 245, 0.75);
+        padding: 15px 25px;
+        background: rgba(255, 240, 245, 0.85);
         border-radius: 12px;
-        border: 2px solid rgba(255, 180, 210, 0.8);
+        border: 2px solid rgba(255, 180, 210, 0.9);
         display: inline-block;
+        box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.5);
+        margin-top: 10px;
       }
 
       /* 漂浮爱心 */
@@ -172,20 +288,20 @@
         opacity: 0.8;
         animation: floatUp 6s linear infinite;
         z-index: 20;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
       }
-
       @keyframes floatUp {
         0% {
-          transform: translateY(0) scale(1);
+          transform: translateY(0) scale(1) rotate(0deg);
           opacity: 0.9;
         }
         100% {
-          transform: translateY(-150px) scale(1.6);
+          transform: translateY(-150px) scale(1.6) rotate(30deg);
           opacity: 0;
         }
       }
 
-      /* 点击爱心 */
+      /* 点击爱心特效升级 */
       .click-heart {
         position: absolute;
         color: #ff5d93;
@@ -193,23 +309,44 @@
         animation: clickFloat 1.2s ease-out forwards;
         pointer-events: none;
         z-index: 99;
+        text-shadow: 0 0 15px rgba(255, 100, 150, 0.8);
       }
       @keyframes clickFloat {
         0% {
           transform: translateY(0) scale(1);
           opacity: 1;
         }
+        50% {
+          transform: translateY(-40px) scale(1.5);
+          opacity: 0.8;
+        }
         100% {
-          transform: translateY(-80px) scale(1.8);
+          transform: translateY(-80px) scale(1.8) rotate(30deg);
           opacity: 0;
         }
       }
 
-      /* PC端布局 - 恢复你原来的样式 */
+      /* 底部日期标记 */
+      .date-marker {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #ff86b9;
+        font-size: 14px;
+        padding: 8px 15px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 20px;
+        backdrop-filter: blur(5px);
+        z-index: 5;
+        letter-spacing: 1px;
+      }
+
+      /* PC端布局 - 精确还原原始位置 */
       @media (min-width: 769px) {
         .photo:nth-of-type(1) {
-          top: -5%;
-          right: 10%;
+          top: -1vh; /* 还原原始top值 */
+          right: 10vh; /* 还原原始right值 */
           width: 14%;
           transform: rotate(30deg);
         }
@@ -244,34 +381,29 @@
           height: 100%;
         }
 
-        body {
-          transform: none;
-        }
-
-        /* 手机端照片布局 */
         .photo:nth-of-type(1) {
-          top: 10%;
+          top: 5%;
           right: 5%;
           width: 30%;
           transform: rotate(15deg);
         }
 
         .photo:nth-of-type(2) {
-          top: 25%;
+          top: 20%;
           left: 5%;
           width: 35%;
           transform: rotate(-10deg);
         }
 
         .photo:nth-of-type(3) {
-          bottom: 15%;
+          bottom: 20%;
           left: 8%;
           width: 30%;
           transform: rotate(20deg);
         }
 
         .main-photo {
-          bottom: 25%;
+          bottom: 30%;
           left: 50%;
           width: 70%;
           transform: translate(-50%, 0) rotate(-2deg);
@@ -291,54 +423,50 @@
 
         #countdown {
           font-size: 18px;
-          padding: 8px 15px;
+          padding: 10px 15px;
         }
 
         .photo {
           border-width: 6px;
         }
 
-        .floating-heart {
-          font-size: 16px;
+        .halo {
+          filter: blur(70px);
         }
-
-        .click-heart {
-          font-size: 18px;
+        .halo1 {
+          width: 500px;
+          height: 500px;
         }
-
-        .bg-layer,
-        .bg-layer2,
-        .bg-layer3 {
-          width: 200%;
-          height: 200%;
-          top: -50%;
-          left: -50%;
+        .halo2 {
+          width: 400px;
+          height: 400px;
         }
-      }
-
-      /* 小屏手机优化 */
-      @media (max-width: 375px) {
-        .title {
-          font-size: 18px;
-        }
-
-        #countdown {
-          font-size: 16px;
-        }
-
-        .main-photo {
-          width: 80%;
+        .halo3 {
+          width: 300px;
+          height: 300px;
         }
       }
     </style>
   </head>
 
   <body>
+    <!-- 光晕背景 -->
+    <div class="halo-bg">
+      <div class="halo halo1"></div>
+      <div class="halo halo2"></div>
+      <div class="halo halo3"></div>
+    </div>
+
+    <!-- 动态星星 -->
+    <div id="stars-container"></div>
+
+    <!-- 背景图 -->
     <img src="light1.png" class="bg-layer" />
     <img src="light2.png" class="bg-layer2" />
     <img src="light3.png" class="bg-layer3" />
 
     <div class="photo-wall">
+      <!-- 照片 -->
       <img src="bg3.png" class="photo" />
       <img src="bg1.png" class="photo" />
       <img src="bg2.png" class="photo" />
@@ -352,6 +480,9 @@
       <div class="title">喵喵 和 初初 已经认识了</div>
       <div id="countdown">Loading...</div>
     </div>
+
+    <!-- 初始日期标记 -->
+    <div class="date-marker">始于 2022.11.28</div>
 
     <script>
       /* 计时功能 */
@@ -383,21 +514,65 @@
         heart.style.top = "100vh";
         heart.style.fontSize = 16 + Math.random() * 20 + "px";
         heart.style.animationDuration = 4 + Math.random() * 4 + "s";
+        const colors = ["#ff7aa5", "#ff5d93", "#ff94c2", "#ffb6e0"];
+        heart.style.color = colors[Math.floor(Math.random() * colors.length)];
 
         document.body.appendChild(heart);
         setTimeout(() => heart.remove(), 8000);
       }
-      setInterval(createFloatingHeart, 800);
+      setInterval(createFloatingHeart, 600);
 
-      /* 点击爱心 */
+      /* 点击爱心特效 */
       document.addEventListener("click", function (e) {
-        const heart = document.createElement("div");
-        heart.className = "click-heart";
-        heart.innerText = "❤";
-        heart.style.left = e.pageX + "px";
-        heart.style.top = e.pageY + "px";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 1200);
+        const count = 3 + Math.floor(Math.random() * 3);
+        for (let i = 0; i < count; i++) {
+          const heart = document.createElement("div");
+          heart.className = "click-heart";
+          heart.innerText = "❤";
+          const offsetX = -20 + Math.random() * 40;
+          const offsetY = -20 + Math.random() * 40;
+          heart.style.left = e.pageX + offsetX + "px";
+          heart.style.top = e.pageY + offsetY + "px";
+          heart.style.fontSize = 16 + Math.random() * 15 + "px";
+          heart.style.animationDuration = 0.8 + Math.random() * 0.6 + "s";
+          const colors = ["#ff5d93", "#ff7aa5", "#ff3b80", "#ff94c2"];
+          heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 1200);
+        }
+      });
+
+      /* 动态星星生成 */
+      function createStars() {
+        const container = document.getElementById("stars-container");
+        const count = window.innerWidth < 768 ? 20 : 40;
+
+        for (let i = 0; i < count; i++) {
+          const star = document.createElement("div");
+          star.className = "star";
+          star.innerText = "★";
+          star.style.left = Math.random() * 100 + "vw";
+          star.style.top = Math.random() * 100 + "vh";
+          star.style.fontSize = 8 + Math.random() * 12 + "px";
+          star.style.animationDuration = 3 + Math.random() * 5 + "s";
+          star.style.animationDelay = Math.random() * 5 + "s";
+          container.appendChild(star);
+        }
+      }
+      createStars();
+
+      /* 页面加载动画 */
+      window.addEventListener("load", function () {
+        document.querySelectorAll(".photo, .main-photo").forEach((el) => {
+          el.style.opacity = 0;
+          el.style.transform = el.style.transform + " scale(0.8)";
+          setTimeout(() => {
+            el.style.transition = "opacity 1s ease, transform 1s ease";
+            el.style.opacity = 0.85;
+            el.style.transform = el.style.transform.replace(" scale(0.8)", "");
+          }, 300 + Math.random() * 800);
+        });
       });
     </script>
   </body>
