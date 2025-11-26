@@ -368,83 +368,87 @@
         body {
           overflow: hidden;
           height: 100%;
+          padding: 0 4%; /* 关键：左右预留4%安全距离，避免内容贴边 */
+          box-sizing: border-box; /* 确保padding不影响整体宽度计算 */
         }
 
-        /* 照片1：右上角 */
+        /* 照片1：右上角 - 减少宽度，增加顶部距离 */
         .photo:nth-of-type(1) {
-          top: 5%;
-          right: 5%;
-          width: 25%;
-          transform: rotate(15deg);
+          top: 8%; /* 上移避免太靠近顶部 */
+          right: 4%; /* 与body右侧padding对齐 */
+          width: 22%; /* 缩小宽度，减少拥挤感 */
+          transform: rotate(12deg); /* 旋转角度略减，更自然 */
           z-index: 3;
         }
 
-        /* 照片2：左上角 */
+        /* 照片2：左上角 - 调整位置和宽度 */
         .photo:nth-of-type(2) {
-          top: 20%;
-          left: 5%;
-          width: 30%;
-          transform: rotate(-10deg);
+          top: 22%; /* 下移一点，与内容框错开 */
+          left: 4%; /* 与body左侧padding对齐 */
+          width: 28%; /* 适度缩小 */
+          transform: rotate(-8deg); /* 旋转角度略减 */
           z-index: 3;
         }
 
-        /* 照片3：左下角 */
+        /* 照片3：左下角 - 上移避免太靠下 */
         .photo:nth-of-type(3) {
-          bottom: 25%;
-          left: 8%;
-          width: 25%;
-          transform: rotate(20deg);
+          bottom: 30%; /* 上移，与主照片拉开距离 */
+          left: 6%;
+          width: 22%;
+          transform: rotate(18deg);
           z-index: 3;
         }
 
-        /* 主照片：底部居中，不遮挡内容框 */
+        /* 主照片：优化位置和边框 */
         .main-photo {
-          bottom: 5%;
+          bottom: 8%; /* 增加底部距离，避免贴底 */
           left: 50%;
-          width: 70%;
-          transform: translate(-50%, 0) rotate(-2deg);
-          border-width: 8px;
+          width: 65%; /* 从70%缩小到65%，更协调 */
+          transform: translate(-50%, 0) rotate(-1.5deg);
+          border-width: 6px; /* 边框从8px减到6px，更精致 */
           z-index: 4;
         }
 
-        /* 内容框：顶部居中，不被照片遮挡 */
+        /* 内容框：适配屏幕宽度，减少内边距 */
         .content-box {
-          padding: 20px 25px;
-          width: 70%;
-          top: 25%; /* 上移，避免和主照片重叠 */
-          z-index: 100; /* 确保在最上层 */
+          padding: 16px 18px; /* 内边距从20px减到16px，避免边框过宽 */
+          width: 90%; /* 基于body的padding内宽，实际占屏幕82% */
+          top: 23%; /* 微调位置 */
+          z-index: 100;
         }
 
-        /* 文字大小适配手机 */
+        /* 文字大小适配 - 更紧凑 */
         .title {
-          font-size: 20px;
-          margin-bottom: 12px;
+          font-size: 19px; /* 略小一点 */
+          margin-bottom: 10px;
         }
         #countdown {
-          font-size: 16px;
-          padding: 8px 12px;
+          font-size: 15px; /* 缩小字体，避免换行拥挤 */
+          padding: 7px 10px;
+          width: 95%; /* 确保文字不溢出 */
+          word-break: keep-all; /* 保持数字完整性 */
         }
 
-        /* 照片边框缩小 */
+        /* 照片边框统一缩小 */
         .photo {
-          border-width: 6px;
+          border-width: 4px; /* 从6px减到4px，更轻盈 */
         }
 
-        /* 光晕适配手机 */
+        /* 光晕适配优化 */
         .halo {
-          filter: blur(70px);
+          filter: blur(60px); /* 模糊度略减，避免覆盖过多内容 */
         }
         .halo1 {
-          width: 500px;
-          height: 500px;
+          width: 450px;
+          height: 450px;
         }
         .halo2 {
-          width: 400px;
-          height: 400px;
+          width: 350px;
+          height: 350px;
         }
         .halo3 {
-          width: 300px;
-          height: 300px;
+          width: 280px;
+          height: 280px;
         }
       }
     </style>
